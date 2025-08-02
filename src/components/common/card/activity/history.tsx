@@ -1,16 +1,11 @@
 import CardHistory from "@/components/common/card/form/card-template/history";
-import { useQuery } from "@tanstack/react-query";
-import { getHistory } from "@/services/history";
+
 import { formmatDate } from "@/lib/converter-data/date";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import type { Todo } from "@/types/todos";
 
-export default function HistoryActivity() {
-	const { data } = useQuery({
-		queryKey: ["activity_history"],
-		queryFn: getHistory,
-	});
-
+export default function HistoryActivity({ data }: { data: Todo[] }) {
 	return (
 		<CardHistory>
 			{data?.map((history) => (
@@ -20,7 +15,9 @@ export default function HistoryActivity() {
 							{/* Header Atas */}
 							<div className="flex items-center justify-between">
 								<Badge className="bg-green-800 text-white px-3 py-1 rounded-md text-sm font-semibold">Done</Badge>
-								<Badge variant="outline" className="px-3 py-1 rounded-md text-sm font-semibold">{formmatDate(history.schedule as string)}</Badge>
+								<Badge variant="outline" className="px-3 py-1 rounded-md text-sm font-semibold">
+									{formmatDate(history.schedule as string)}
+								</Badge>
 							</div>
 
 							{/* Konten Judul & Deskripsi */}
