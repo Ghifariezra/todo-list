@@ -31,5 +31,5 @@ export default function History() {
 		);
 	}
 
-	return <Main id="history">{data && data.length > 0 ? <HistoryActivity data={data} /> : <Introduction title="Belum Ada Riwayat Aktivitas" />}</Main>;
+	return <Main id="history">{data && data.length > 0 ? <HistoryActivity data={data} /> : <Introduction title="Belum Ada Riwayat Aktivitas" src="/not-yet.png" />}</Main>;
 }

@@ -118,4 +118,15 @@
   body {
     @apply bg-background text-foreground;
   }
+    input:-webkit-autofill {
+    @apply bg-white text-gray-900;
+    box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: #111827 !important;
+  }
+
+  input:-webkit-autofill:focus {
+    @apply bg-gray-50;
+    box-shadow: 0 0 0px 1000px #f9fafb inset !important;
+    -webkit-text-fill-color: #111827 !important;
+  }
 }

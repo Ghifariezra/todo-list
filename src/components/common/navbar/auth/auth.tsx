@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
+
 const LinkPath = [
 	{
 		name: "Login",
@@ -16,15 +18,31 @@ const LinkPath = [
 ];
 
 const Auth = memo(function Auth({ className }: { className?: string }) {
+	const navigate = useNavigate();
+	const token = localStorage.getItem("token");
+
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		navigate("/login"); // redirect ke login setelah logout
+	};
+
 	return (
 		<ul className={`${className} items-center gap-4 font-medium`}>
-			{LinkPath.map((link) => (
-				<li key={link.name}>
-					<Button asChild variant={link.variant} className={`rounded-lg px-6 py-2 transition-all duration-300 shadow-sm ${link.className}`}>
-						<a href={link.href}>{link.name}</a>
+			{token ? (
+				<li>
+					<Button variant="destructive" className="rounded-lg px-6 py-2 transition-all duration-300 shadow-sm bg-red-600 hover:bg-red-700 text-white cursor-pointer" onClick={handleLogout}>
+						Logout
 					</Button>
 				</li>
-			))}
+			) : (
+				LinkPath.map((link) => (
+					<li key={link.name}>
+						<Button asChild variant={link.variant} className={`rounded-lg px-6 py-2 transition-all duration-300 shadow-sm ${link.className}`}>
+							<a href={link.href}>{link.name}</a>
+						</Button>
+					</li>
+				))
+			)}
 		</ul>
 	);
 });
