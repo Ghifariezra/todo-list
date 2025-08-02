@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { memo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const LinkPath = [
 	{
@@ -18,14 +18,7 @@ const LinkPath = [
 ];
 
 const Auth = memo(function Auth({ className }: { className?: string }) {
-	const navigate = useNavigate();
-	const token = localStorage.getItem("token");
-
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		navigate("/login"); // redirect ke login setelah logout
-	};
-
+	const { user: token, logout: handleLogout } = useAuth();
 	return (
 		<ul className={`${className} items-center gap-4 font-medium`}>
 			{token ? (

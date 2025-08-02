@@ -6,27 +6,23 @@ import { FormLogin, FormRegis } from "@/components/common/card/form/auth/auth";
 const Main = lazy(() => import("@/components/layouts/main"));
 const Home = lazy(() => import("@/components/layouts/home"));
 const History = lazy(() => import("@/components/layouts/history"));
-const ProtectedRoute = lazy(() => import("@/components/ProtectedRoute"));
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		Component: Main,
 		children: [
-			{ index: true, Component: Home },
+			{ path: "/", Component: Home },
 			{
 				path: "/riwayat",
-				element: (
-					<ProtectedRoute>
-						<History />
-					</ProtectedRoute>
-				),
+				Component: History,
 			},
 			{ path: "/login", Component: FormLogin, action: LoginAction },
 			{ path: "/register", Component: FormRegis, action: RegisterAction },
 		],
 	},
 ]);
+
 
 export default function App() {
 	return (

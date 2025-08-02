@@ -4,6 +4,7 @@ import { Plus, X } from "lucide-react";
 import { ListLink } from "@/components/common/navbar/list-nav";
 import { FormAdd } from "@/components/common/card/form/form-post";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const LinkPath = [
 	{
@@ -14,6 +15,7 @@ const LinkPath = [
 
 export default function Post({ refetch }: { refetch: () => void }) {
 	const navigate = useNavigate();
+	const { user } = useAuth();
 	const [open, setOpen] = useState(false);
 	const [open2, setOpen2] = useState(false);
 	const [openForm, setOpenForm] = useState<string | null>(null);
@@ -30,6 +32,12 @@ export default function Post({ refetch }: { refetch: () => void }) {
 	const toggleForm = useCallback((name: string) => {
 		setOpenForm(name);
 	}, []);
+
+	const handleLogin = useCallback(() => {
+		if (!user) {
+			navigate("/login");
+		}
+	}, [navigate, user]);
 
 	useEffect(() => {
 		function handleClick(event: MouseEvent) {
@@ -58,13 +66,7 @@ export default function Post({ refetch }: { refetch: () => void }) {
 								<ListLink
 									key={link.name}
 									onClick={() => {
-										// Check if the user is logged in
-										const token = localStorage.getItem("token");
-										if (!token) {
-											navigate("/login");
-										}
-
-										// If the user is logged in, open the form
+										handleLogin();
 										toggleMenu2();
 										toggleForm(link.name);
 									}}

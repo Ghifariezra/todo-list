@@ -5,6 +5,6 @@ export const ListLink = memo(function ListLink({ children, className, href, onCl
 	return (
 		<li onClick={onClick} className={className}>
 			<Link to={href || ""}>{children}</Link>
-		</li>
+		</li> 
 	);
 });

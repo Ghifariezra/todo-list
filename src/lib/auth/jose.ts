@@ -2,7 +2,7 @@ import { SignJWT, jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(import.meta.env.JWT_SECRET || "supersecret");
 
-interface Payload {
+export interface Payload {
     id: number;
     email: string;
     [key: string]: unknown;
