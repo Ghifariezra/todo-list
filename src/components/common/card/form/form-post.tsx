@@ -3,7 +3,7 @@ import AddCard from "@/components/common/card/form/card-template";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar28 } from "@/components/common/card/form/date-picker";
-import { addTodo, updateTodo } from "@/services/todos";
+import { addTodo, updateTodo } from "@/services/activity";
 import type { Todo } from "@/types/todos";
 
 const FormAdd = memo(({ refetch }: { refetch: () => void }) => {

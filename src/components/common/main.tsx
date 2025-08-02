@@ -1,3 +1,3 @@
-export default function Main({ children }: React.PropsWithChildren) {
-    return <main className="flex-1 bg-white mt-8">{children}</main>;
+export default function Main({ children, id }: React.PropsWithChildren<{ id?: string }>) {
+    return <main id={id} className="flex-1 bg-white p-4">{children}</main>;
 }
