@@ -3,7 +3,7 @@ import {
 } from "@/lib/supabase/main";
 import type { Todo } from "@/types/todos";
 
-const getTodos = async () => {
+const getHistory = async () => {
     const { data, error } = await supabase.from("activity_history").select("*");
 
     if (error) {
@@ -30,4 +30,4 @@ const addHistory = async ({ activity_id, title, description, date }: { activity_
     return true;
 }
 
-export { getTodos, addHistory }
+export { getHistory, addHistory }

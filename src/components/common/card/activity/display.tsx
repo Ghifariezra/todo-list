@@ -7,15 +7,8 @@ import { X } from "lucide-react";
 import { updateTodo, deleteTodos } from "@/services/activity";
 import { addHistory } from "@/services/history";
 import { FormUpdate } from "@/components/common/card/form/form-post";
+import { formmatDate } from "@/lib/converter-data/date";
 
-const formmatDate = (date: string) => {
-	if (!date) return "";
-	return new Date(date).toLocaleDateString("en-US", {
-		day: "2-digit",
-		month: "long",
-		year: "numeric",
-	});
-};
 
 export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; isLoading: boolean; refetch: () => void }) {
 	const [open, setOpen] = useState(false);

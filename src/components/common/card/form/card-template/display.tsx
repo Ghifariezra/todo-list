@@ -1,5 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+	Card, 
+	CardAction, 
+	CardContent, 
+	CardDescription, 
+	CardFooter, 
+	CardHeader, 
+	CardTitle 
+} from "@/components/ui/card";
 
 export default function AddCard({ children, className, open, toggleMenu, onSubmitData, title, description }: React.PropsWithChildren<{ className?: string; open: boolean; toggleMenu: () => void, onSubmitData: () => void, title?: string, description?: string }>) {
 	if (open) return null;

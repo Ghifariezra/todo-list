@@ -1,5 +1,5 @@
 import { memo, useState, useCallback, useEffect } from "react";
-import AddCard from "@/components/common/card/form/card-template";
+import AddCard from "@/components/common/card/form/card-template/display";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar28 } from "@/components/common/card/form/date-picker";

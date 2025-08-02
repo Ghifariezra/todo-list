@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const LinkPath = [
 	{
-		name: "Riwayat Catatan",
+		name: "Riwayat Aktivitas",
 		href: "/riwayat",
 	},
 ];
