@@ -5,11 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getTodos } from "@/services/activity";
 import { ActivityDisplay } from "@/components/common/card/activity/display";
 import { useCallback } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
+	const { user } = useAuth();
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["activity"],
-		queryFn: () => getTodos(),
+		queryFn: () => getTodos({ user_id: user?.id as number }),
 	});
 	const handleRefetch = useCallback(() => refetch(), [refetch]);
 

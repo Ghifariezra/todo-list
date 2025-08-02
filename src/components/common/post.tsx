@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
 import { ListLink } from "@/components/common/navbar/list-nav";
-import { FormAdd } from "@/components/common/card/form/form-post";
+import { FormAdd } from "@/components/common/card/form/card-template/form-post";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 

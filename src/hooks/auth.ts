@@ -67,7 +67,7 @@ export const LoginAction = async ({ request }: { request: Request }) => {
         // Wait until done make Backend Server
         localStorage.setItem("token", token);
 
-        return redirect("/");
+        return window.location.href = "/";
     } catch (err: unknown) {
         let errorMessage = "Terjadi kesalahan pada server";
         if (err instanceof Error) {

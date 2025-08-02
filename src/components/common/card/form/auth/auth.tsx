@@ -8,7 +8,7 @@ function FormLogin() {
 
 	return (
 		<div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-			<Form method="POST" action="/login" className="w-full max-w-md bg-white rounded-lg shadow-md p-6 flex flex-col gap-6">
+			<Form method="POST" action="/login" className="w-full max-w-md bg-white rounded-lg shadow-md p-6 flex flex-col gap-6 text-blue-900">
 				<h2 className="text-2xl font-bold text-center text-gray-800">Login ke Akunmu</h2>
 
 				{/* Email */}

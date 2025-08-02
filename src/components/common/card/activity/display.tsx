@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Card, CardDescription, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Todo } from "@/types/todos";
@@ -6,13 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { updateTodo, deleteTodos } from "@/services/activity";
 import { addHistory } from "@/services/history";
-import { FormUpdate } from "@/components/common/card/form/form-post";
+import { FormUpdate } from "@/components/common/card/form/card-template/form-post";
 import { formmatDate } from "@/lib/converter-data/date";
-
+import { useAuth } from "@/hooks/useAuth";
 
 export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; isLoading: boolean; refetch: () => void }) {
 	const [open, setOpen] = useState(false);
 	const [updateId, setUpdateId] = useState(0);
+	const { user } = useAuth();
 
 	const toggleForm = useCallback((id: number) => {
 		setOpen((prev) => !prev);
@@ -21,10 +22,10 @@ export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; is
 
 	const handleDelete = useCallback(
 		async (id: number) => {
-			await deleteTodos(id);
+			await deleteTodos(id, user?.id as number);
 			refetch();
 		},
-		[refetch]
+		[refetch, user]
 	);
 
 	const handleUpdate = useCallback(
@@ -34,11 +35,12 @@ export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; is
 				title: data.find((todo) => todo.id === id)?.title as string,
 				description: data.find((todo) => todo.id === id)?.description as string,
 				date: data.find((todo) => todo.id === id)?.schedule as string,
+				user_id: user?.id as number,
 			});
-			await updateTodo(id, { is_completed: !is_completed });
+			await updateTodo(id, user?.id as number, { is_completed: !is_completed });
 			refetch();
 		},
-		[refetch]
+		[refetch, user]
 	);
 
 	return (
@@ -53,9 +55,9 @@ export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; is
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
 					{data.map((todo) => {
 						return (
-							<>
+							<React.Fragment key={todo.id}>
 								{!todo.is_completed && (
-									<Card key={todo.id}>
+									<Card>
 										<CardHeader className="block h-full">
 											<div className="flex flex-col gap-4">
 												{/* Header Atas */}
@@ -83,7 +85,7 @@ export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; is
 										)}
 									</Card>
 								)}
-							</>
+							</React.Fragment>
 						);
 					})}
 				</div>

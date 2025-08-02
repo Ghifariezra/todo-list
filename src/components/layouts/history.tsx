@@ -6,13 +6,14 @@ import { getHistory } from "@/services/history";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 export default function History() {
-	const { data, isLoading, isError, refetch } = useQuery({
-		queryKey: ["activity_history"],
-		queryFn: getHistory,
-	});
 	const { user } = useAuth();
+	const { data, isLoading, isError, refetch } = useQuery({
+		queryKey: ["activity_history", user?.id],
+		queryFn: () => getHistory({
+			user_id: user?.id as number,
+		}),
+	});
 	const navigate = useNavigate();
 
 	useEffect(() => {
