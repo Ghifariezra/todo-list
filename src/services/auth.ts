@@ -3,6 +3,7 @@ import type { Payload } from "@/lib/auth/jose";
 const FetchUser = async ({ setUser }: { setUser: React.Dispatch<React.SetStateAction<Payload | null>> }) => {
     try {
         const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}me`, {
+            method: 'GET',
             credentials: 'include',
         });
 
