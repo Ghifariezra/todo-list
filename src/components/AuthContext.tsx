@@ -1,25 +1,17 @@
-import { useState, useEffect } from "react";
-import { verifyToken, type Payload } from "@/lib/auth/jose";
-import { AuthContext } from "@/hooks/useAuth";
+import { useState, useEffect } from 'react';
+import { AuthContext } from '@/hooks/useAuth';
+import type { Payload } from '@/lib/auth/jose';
+import { FetchUser, Logout } from '@/services/auth';
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
 	const [user, setUser] = useState<Payload | null>(null);
 
 	useEffect(() => {
-		const token = localStorage.getItem("token");
-		if (!token) return;
-
-		verifyToken(token)
-			.then((payload) => setUser(payload as Payload))
-			.catch(() => {
-				localStorage.removeItem("token");
-				setUser(null);
-			});
+		FetchUser({ setUser });
 	}, []);
 
-	const logout = () => {
-		localStorage.removeItem("token");
-		setUser(null);
+	const logout = async () => {
+		Logout({ setUser });
 	};
 
 	return <AuthContext.Provider value={{ user, setUser, logout }}>{children}</AuthContext.Provider>;

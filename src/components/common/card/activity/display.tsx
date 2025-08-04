@@ -1,19 +1,17 @@
-import React, { useCallback, useState } from "react";
-import { Card, CardDescription, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import type { Todo } from "@/types/todos";
-import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
-import { updateTodo, deleteTodos } from "@/services/activity";
-import { addHistory } from "@/services/history";
-import { FormUpdate } from "@/components/common/card/form/card-template/form-post";
-import { formmatDate } from "@/lib/converter-data/date";
-import { useAuth } from "@/hooks/useAuth";
+import React, { useCallback, useState } from 'react';
+import { Card, CardDescription, CardHeader, CardTitle, CardAction } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import type { Todo } from '@/types/todos';
+import { Badge } from '@/components/ui/badge';
+import { X } from 'lucide-react';
+import { updateTodo, deleteTodos } from '@/services/activity';
+import { addHistory } from '@/services/history';
+import { FormUpdate } from '@/components/common/card/form/card-template/form-post';
+import { formmatDate } from '@/lib/converter-data/date';
 
 export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; isLoading: boolean; refetch: () => void }) {
 	const [open, setOpen] = useState(false);
 	const [updateId, setUpdateId] = useState(0);
-	const { user } = useAuth();
 
 	const toggleForm = useCallback((id: number) => {
 		setOpen((prev) => !prev);
@@ -22,10 +20,10 @@ export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; is
 
 	const handleDelete = useCallback(
 		async (id: number) => {
-			await deleteTodos(id, user?.id as number);
+			await deleteTodos(id);
 			refetch();
 		},
-		[refetch, user]
+		[refetch]
 	);
 
 	const handleUpdate = useCallback(
@@ -35,12 +33,11 @@ export function ActivityDisplay({ data, isLoading, refetch }: { data: Todo[]; is
 				title: data.find((todo) => todo.id === id)?.title as string,
 				description: data.find((todo) => todo.id === id)?.description as string,
 				date: data.find((todo) => todo.id === id)?.schedule as string,
-				user_id: user?.id as number,
 			});
-			await updateTodo(id, user?.id as number, { is_completed: !is_completed });
+			await updateTodo(id, { is_completed: !is_completed });
 			refetch();
 		},
-		[refetch, user]
+		[refetch]
 	);
 
 	return (

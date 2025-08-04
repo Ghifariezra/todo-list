@@ -1,7 +1,5 @@
-import { genSaltSync, hashSync, compareSync } from "bcrypt-ts";
-import { Registrasi, Validasi, FindUser } from "@/services/auth";
+import { Registrasi, Login } from "@/services/auth";
 import { redirect } from "react-router-dom";
-import { generateToken } from "@/lib/auth/jose";
 
 // REGISTER ACTION
 export const RegisterAction = async ({ request }: { request: Request }) => {
@@ -19,8 +17,8 @@ export const RegisterAction = async ({ request }: { request: Request }) => {
         return new Response(JSON.stringify({ error: "Format email tidak valid" }), { status: 400, headers: { "Content-Type": "application/json" } });
     }
 
-    if (password.length < 6) {
-        return new Response(JSON.stringify({ error: "Password minimal 6 karakter" }), { status: 400, headers: { "Content-Type": "application/json" } });
+    if (password.length < 8) {
+        return new Response(JSON.stringify({ error: "Password minimal 8 karakter" }), { status: 400, headers: { "Content-Type": "application/json" } });
     }
 
     if (password !== confirmPassword) {
@@ -28,11 +26,11 @@ export const RegisterAction = async ({ request }: { request: Request }) => {
     }
 
     try {
-        await Validasi({ email });
-        const salt = genSaltSync(10);
-        const hashedPassword = hashSync(password, salt);
+        const user = await Registrasi({ name, email, password, password_confirmation: confirmPassword });
 
-        await Registrasi({ name, email, hashedPassword });
+        if (user.status === 401) {
+            return new Response(JSON.stringify({ error: "Email sudah terdaftar" }), { status: 400, headers: { "Content-Type": "application/json" } });
+        }
 
         return redirect("/login");
     } catch (err: unknown) {
@@ -55,17 +53,11 @@ export const LoginAction = async ({ request }: { request: Request }) => {
     }
 
     try {
-        const user = await FindUser({ email });
-        const valid = compareSync(password, user.password_hash);
+        const user = await Login({ email, password });
 
-        if (!valid) {
-            return new Response(JSON.stringify({ error: "Password salah" }), { status: 401, headers: { "Content-Type": "application/json" } });
+        if (user.status === 401) {
+            return new Response(JSON.stringify({ error: "Email atau password salah" }), { status: 400, headers: { "Content-Type": "application/json" } });
         }
-
-        const token = await generateToken({ id: user.id, email: user.email });
-
-        // Wait until done make Backend Server
-        localStorage.setItem("token", token);
 
         return window.location.href = "/";
     } catch (err: unknown) {

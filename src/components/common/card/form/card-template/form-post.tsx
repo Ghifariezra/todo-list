@@ -5,7 +5,6 @@ import { Label } from "@/components/ui/label";
 import { Calendar28 } from "@/components/common/card/form/card-template/date-picker";
 import { addTodo, updateTodo } from "@/services/activity";
 import type { Todo } from "@/types/todos";
-import { useAuth } from "@/hooks/useAuth";
 
 const FormAdd = memo(({ refetch }: { refetch: () => void }) => {
 	const [open, setOpen] = useState(false);
@@ -16,7 +15,6 @@ const FormAdd = memo(({ refetch }: { refetch: () => void }) => {
 		date: "",
 		description: "",
 	});
-	const { user } = useAuth();
 
 	const toggleMenu = useCallback(() => {
 		setOpen((prev) => !prev);
@@ -27,7 +25,7 @@ const FormAdd = memo(({ refetch }: { refetch: () => void }) => {
 	const onSubmitData = useCallback(async () => {
 		try {
 			if (!form.title) return null;
-			await addTodo({ ...form, user_id: user?.id as number });
+			await addTodo({ ...form, schedule: form.date });
 			setSuccess("Berhasil menambahkan todo");
 			setForm({ title: "", date: "", description: "" });
 			toggleMenu();
@@ -36,7 +34,7 @@ const FormAdd = memo(({ refetch }: { refetch: () => void }) => {
 			console.error(err);
 			setError("Gagal menambahkan todo");
 		}
-	}, [form, toggleMenu, refetch, user]);
+	}, [form, toggleMenu, refetch ]);
 
 	return (
 		<div className="flex flex-col gap-4 items-center">
@@ -68,7 +66,6 @@ const FormUpdate = memo(({ refetch, data, id }: { refetch: () => void; data: Tod
 		date: "",
 		description: "",
 	});
-	const { user } = useAuth();
 
 	const toggleMenu = useCallback(() => {
 		setOpen((prev) => !prev);
@@ -79,7 +76,7 @@ const FormUpdate = memo(({ refetch, data, id }: { refetch: () => void; data: Tod
 	const onSubmitData = useCallback(async () => {
 		try {
 			if (!form.title) return null;
-			await updateTodo(id, user?.id as number, {
+			await updateTodo(id, {
 				title: form.title,
 				description: form.description,
 				schedule: form.date,
@@ -92,7 +89,7 @@ const FormUpdate = memo(({ refetch, data, id }: { refetch: () => void; data: Tod
 			console.error(err);
 			setError("Gagal menambahkan todo");
 		}
-	}, [form, toggleMenu, refetch, id, user]);
+	}, [form, toggleMenu, refetch, id]);
 
 	useEffect(() => {
 		const todo = data.find((todo) => todo.is_completed === false && todo.id === id);

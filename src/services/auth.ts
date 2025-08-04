@@ -1,24 +1,52 @@
-import {
-    supabase
-} from "@/lib/supabase/main";
+import type { Payload } from "@/lib/auth/jose";
 
-// Simpan user baru
-export const Registrasi = async ({name, email, hashedPassword }: { name: string, email: string, hashedPassword: string }) => {
-    const { error } = await supabase.from("users").insert({ name, email, password_hash: hashedPassword });
-    
-    if (error) throw new Error(error.message);
+const FetchUser = async ({ setUser }: { setUser: React.Dispatch<React.SetStateAction<Payload | null>> }) => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}me`, {
+            credentials: 'include',
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            setUser(data.user);
+        } else {
+            setUser(null);
+            return;
+        }
+    } catch {
+        setUser(null);
+    }
 };
 
-// Cek apakah email sudah terdaftar
-export const Validasi = async ({ email }: { email: string }) => {
-    const { data: existing, error } = await supabase.from("users").select("id").eq("email", email).single();
-    if (error && error.code !== "PGRST116") throw new Error(error.message);
-    if (existing) throw new Error("Email sudah terdaftar");
+const Registrasi = async ({name, email, password, password_confirmation }: { name: string, email: string, password: string, password_confirmation: string }) => {
+    const response = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password, password_confirmation }),
+    })
+    return response
 };
 
-// Cari user berdasarkan email
-export const FindUser = async ({ email }: { email: string }) => {
-    const { data: user, error } = await supabase.from("users").select("*").eq("email", email).single();
-    if (error || !user) throw new Error("Email tidak ditemukan");
-    return user;
+const Login = async ({ email, password }: { email: string, password: string }) => {
+    const response = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+    })
+    return response
 };
+
+const Logout = async ({ setUser }: { setUser: React.Dispatch<React.SetStateAction<Payload | null>> }) => {
+    await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}logout`, {
+        method: 'POST',
+        credentials: 'include',
+    });
+    setUser(null);
+};
+
+export { Registrasi, Login, FetchUser, Logout };

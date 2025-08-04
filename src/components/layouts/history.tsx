@@ -10,9 +10,7 @@ export default function History() {
 	const { user } = useAuth();
 	const { data, isLoading, isError, refetch } = useQuery({
 		queryKey: ["activity_history", user?.id],
-		queryFn: () => getHistory({
-			user_id: user?.id as number,
-		}),
+		queryFn: getHistory,
 	});
 	const navigate = useNavigate();
 

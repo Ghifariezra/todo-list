@@ -1,67 +1,69 @@
-import {
-    supabase
-} from "@/lib/supabase/main";
-import type { Todo } from "@/types/todos";
+const addTodo = async ({ title, description, schedule }: { title: string, description?: string, schedule?: string }) => {
+    const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}activity/add`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ title, description, schedule })
+    });
 
-const getTodos = async ({ user_id }: { user_id: number }) => {
-    const { data, error } = await supabase.from("activity").select("*").eq("user_id", user_id);
-
-    if (error) {
-        throw new Error(error.message);
+    if (!res.ok) {
+        throw new Error(`Failed to add todo: ${res.statusText}`);
     }
 
-    return data as Todo[];
+    return res.json();
 }
 
-const addTodo = async ({ user_id, title, description, date }: { user_id: number, title: string, description?: string, date?: string }) => {
-    const { error } = await supabase
-        .from('activity')
-        .insert({
-            title: title,
-            description: description,
-            schedule: date,
-            user_id: user_id
-        });
+const getTodos = async () => {
+    const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}activity`, {
+        method: 'GET',
+        credentials: 'include',
+    });
 
-    if (error) {
-        throw new Error(error.message);
+    if (!res.ok) {
+        throw new Error(`Failed to get todos: ${res.statusText}`);
     }
 
-    return true;
+    return res.json();
 }
 
 const updateTodo = async (
     id: number,
-    user_id: number,
     updates: { title?: string; description?: string; schedule?: string; is_completed?: boolean }
 ) => {
-    const { error } = await supabase
-        .from("activity")
-        .update(updates)
-        .eq("id", id)
-        .eq("user_id", user_id);
+    const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}activity/update/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(updates)
+    });
 
-    if (error) throw new Error(error.message);
-    return true;
-};
-
-const deleteTodos = async (selectedIds: number, user_id: number) => {
-    const { error } = await supabase
-        .from("activity")
-        .delete()
-        .eq("id", selectedIds)
-        .eq("user_id", user_id);
-
-    if (error) {
-        throw new Error(error.message);
+    if (!res.ok) {
+        throw new Error(`Failed to update todo: ${res.statusText}`);
     }
 
-    return true;
+    return res.json();
+};
+
+const deleteTodos = async (selectedIds: number) => {
+    const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}activity/delete/${selectedIds}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+
+    if (!res.ok) {
+        throw new Error(`Failed to delete todos: ${res.statusText}`);
+    }
+
+    return res.json();
 };
 
 export {
-    getTodos,
     addTodo,
+    getTodos,
     updateTodo,
     deleteTodos
 }
