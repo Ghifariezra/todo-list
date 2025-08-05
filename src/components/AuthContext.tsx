@@ -18,7 +18,7 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
 	const logout = useCallback(async () => {
 		try {
 			await Logout({ setUser });
-			setUser(null); // pastikan langsung null tanpa nunggu fetch ulang
+			setUser(null);
 		} catch (err) {
 			console.error('Logout error:', err);
 		}

@@ -29,6 +29,7 @@ const Auth = function Auth({ className }: { className?: string }) {
 						className="rounded-lg px-6 py-2 transition-all duration-300 shadow-sm bg-red-600 hover:bg-red-700 text-white cursor-pointer"
 						onClick={async () => {
 							await handleLogout();
+							window.location.href = '/';
 						}}>
 						Logout
 					</Button>
