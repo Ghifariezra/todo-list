@@ -24,10 +24,12 @@ const Auth = function Auth({ className }: { className?: string }) {
 		<ul className={`${className} items-center gap-4 font-medium`}>
 			{token ? (
 				<li>
-					<Button variant="destructive" className="rounded-lg px-6 py-2 transition-all duration-300 shadow-sm bg-red-600 hover:bg-red-700 text-white cursor-pointer" onClick={() => {
-                        handleLogout();
-                        window.location.href = "/";
-                    }}>
+					<Button
+						variant="destructive"
+						className="rounded-lg px-6 py-2 transition-all duration-300 shadow-sm bg-red-600 hover:bg-red-700 text-white cursor-pointer"
+						onClick={async () => {
+							await handleLogout();
+						}}>
 						Logout
 					</Button>
 				</li>
