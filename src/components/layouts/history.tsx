@@ -1,22 +1,25 @@
-import Main from "@/components/common/main";
-import HistoryActivity from "@/components/common/card/activity/history";
-import Introduction from "@/components/common/introduction";
-import { useQuery } from "@tanstack/react-query";
-import { getHistory } from "@/services/history";
-import { useAuth } from "@/hooks/useAuth";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import Main from '@/components/common/main';
+import HistoryActivity from '@/components/common/card/activity/history';
+import Introduction from '@/components/common/introduction';
+import { useQuery } from '@tanstack/react-query';
+import { getHistory } from '@/services/history';
+import { useAuth } from '@/hooks/useAuth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 export default function History() {
 	const { user } = useAuth();
 	const { data, isLoading, isError, refetch } = useQuery({
-		queryKey: ["activity_history", user?.id],
-		queryFn: getHistory,
+		queryKey: ['activity_history', user?.id],
+		queryFn: () =>
+			getHistory({
+				user_id: user?.id as number,
+			}),
 	});
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!user) {
-			navigate("/login");
+			navigate('/login');
 		}
 	}, [user, navigate]);
 

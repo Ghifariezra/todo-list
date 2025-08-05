@@ -1,37 +1,34 @@
-const addHistory = async ({ activity_id, title, description, date }:
-    { activity_id: number; title: string; description?: string; date?: string }) => {
-    const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}history/add`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            activity_id,
-            title,
-            description,
-            schedule: date,
-        }),
-    });
+import {
+    supabase
+} from "@/lib/supabase/main";
+import type { Todo } from "@/types/todos";
 
-    if (!res.ok) {
-        throw new Error(`Failed to add history: ${res.statusText}`);
+const getHistory = async ({ user_id }: { user_id: number }) => {
+    const { data, error } = await supabase.from("activity_history").select("*").eq("user_id", user_id);
+
+    if (error) {
+        throw new Error(error.message);
     }
 
-    return res.json();
-};
-
-const getHistory = async () => {
-    const res = await fetch(`${import.meta.env.VITE_ALLOWED_HOSTS}history-activity`, {
-        method: 'GET',
-        credentials: 'include',
-    });
-
-    if (!res.ok) {
-        throw new Error(`Failed to get history: ${res.statusText}`);
-    }
-
-    return res.json();
+    return data as Todo[];
 }
 
-export { addHistory, getHistory };
+const addHistory = async ({ activity_id, title, description, date, user_id }: { activity_id: number, title: string, description?: string, date?: string, user_id: number }) => {
+    const { error } = await supabase
+        .from('activity_history')
+        .insert({
+            activity_id: activity_id,
+            title: title,
+            description: description,
+            schedule: date,
+            user_id: user_id
+        });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return true;
+}
+
+export { getHistory, addHistory }

@@ -1,15 +1,15 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Plus, X } from "lucide-react";
-import { ListLink } from "@/components/common/navbar/list-nav";
-import { FormAdd } from "@/components/common/card/form/card-template/form-post";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Plus, X } from 'lucide-react';
+import { ListLink } from '@/components/common/navbar/list-nav';
+import { FormAdd } from '@/components/common/card/form/card-template/form-post';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 const LinkPath = [
 	{
-		name: "Add Note",
-		color: "bg-green-600 hover:bg-green-700",
+		name: 'Add Note',
+		color: 'bg-green-600 hover:bg-green-700',
 	},
 ];
 
@@ -35,7 +35,7 @@ export default function Post({ refetch }: { refetch: () => void }) {
 
 	const handleLogin = useCallback(() => {
 		if (!user) {
-			navigate("/login");
+			navigate('/login');
 		}
 	}, [navigate, user]);
 
@@ -46,17 +46,17 @@ export default function Post({ refetch }: { refetch: () => void }) {
 				setOpen(false);
 			}
 		}
-		document.addEventListener("mousedown", handleClick);
+		document.addEventListener('mousedown', handleClick);
 		return () => {
-			document.removeEventListener("mousedown", handleClick);
+			document.removeEventListener('mousedown', handleClick);
 		};
 	}, []);
 
 	return (
 		<>
-			{open2 && openForm === "Add Note" && <FormAdd refetch={refetch} />}
+			{open2 && openForm === 'Add Note' && <FormAdd refetch={refetch} />}
 			<div ref={ref} className="fixed bottom-4 right-4 group w-[60px]">
-				<Button onClick={toggleMenu} aria-label={open ? "Tutup menu" : "Buka menu"} className="cursor-pointer bg-blue-600 group-hover:!bg-blue-700 duration-800 ease-in-out w-full">
+				<Button onClick={toggleMenu} aria-label={open ? 'Tutup menu' : 'Buka menu'} className="cursor-pointer bg-blue-600 group-hover:!bg-blue-700 duration-800 ease-in-out w-full">
 					{open ? <X className="size-6" /> : <Plus className="size-6" />}
 				</Button>
 				{open && (
@@ -70,8 +70,7 @@ export default function Post({ refetch }: { refetch: () => void }) {
 										toggleMenu2();
 										toggleForm(link.name);
 									}}
-									className={`cursor-pointer transition duration-300 ease-in-out w-full ${link.color} text-white rounded-sm p-2`}
-								>
+									className={`cursor-pointer transition duration-300 ease-in-out w-full ${link.color} text-white rounded-sm p-2`}>
 									{link.name}
 								</ListLink>
 							))}

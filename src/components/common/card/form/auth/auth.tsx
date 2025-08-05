@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Form, useActionData } from "react-router-dom";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Form, useActionData } from 'react-router-dom';
 
 function FormLogin() {
 	const actionData = useActionData() as { error?: string; message?: string };
@@ -33,7 +33,7 @@ function FormLogin() {
 				</Button>
 
 				<p className="text-sm text-center text-gray-600">
-					Belum punya akun?{" "}
+					Belum punya akun?{' '}
 					<a href="/register" className="text-blue-600 font-medium hover:underline cursor-pointer">
 						Daftar disini
 					</a>
@@ -84,7 +84,7 @@ function FormRegis() {
 				</Button>
 
 				<p className="text-sm text-center text-gray-600">
-					Sudah punya akun?{" "}
+					Sudah punya akun?{' '}
 					<a href="/login" className="text-blue-600 font-medium hover:underline cursor-pointer">
 						Login disini
 					</a>
