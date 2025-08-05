@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LinkPath = [
 	{
@@ -18,6 +18,7 @@ const LinkPath = [
 ];
 
 const Auth = function Auth({ className }: { className?: string }) {
+	const navigate = useNavigate();
 	const { user: token, logout: handleLogout } = useAuth();
 
 	return (
@@ -29,7 +30,7 @@ const Auth = function Auth({ className }: { className?: string }) {
 						className="rounded-lg px-6 py-2 transition-all duration-300 shadow-sm bg-red-600 hover:bg-red-700 text-white cursor-pointer"
 						onClick={async () => {
 							await handleLogout();
-							window.location.href = '/';
+							navigate("/");
 						}}>
 						Logout
 					</Button>
